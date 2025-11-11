@@ -64,7 +64,7 @@ Docker Desktop
 Rider, Visual Studio o VS Code
 
 ✅ 1. Clonar el repositorio
-git clone https://github.com/TU-USUARIO/Simulacro-HU3.git
+git clone https://github.com/LuisaFer126/Simulacro-HU3-2.O.git
 cd Simulacro-HU3
 
 ✅ 2. Configurar el appsettings.json
@@ -102,7 +102,8 @@ dotnet run
 
 Luego abre Swagger:
 
-👉 http://localhost:8080/swagger
+👉 http://localhost:8080/
+http://localhost:5268/swagger
 
 🔐 Autenticación JWT
 
