@@ -1,214 +1,209 @@
-# 🌐 WebApi HU3 – Sistema de Gestión de Usuarios y Estudiantes
+🌐 Simulacro-HU3 – API REST de Usuarios y Productos (JWT + Docker + MySQL)
 
-## 📘 Descripción General
+📘 Descripción General
 
-**WebApi HU3** es una aplicación desarrollada en **ASP.NET Core** que implementa una arquitectura por capas (Domain, Application, Infrastructure y API).  
-El sistema permite la **gestión de usuarios y estudiantes**, con autenticación mediante **JSON Web Tokens (JWT)** para proteger los endpoints.  
-Está diseñado con fines **académicos y profesionales**, siguiendo buenas prácticas de programación y patrones de diseño.
+Simulacro-HU3 es una API REST desarrollada en ASP.NET Core (.NET 8) con arquitectura por capas y autenticación basada en JSON Web Tokens (JWT).
+El sistema permite la gestión de usuarios y productos, integrando operaciones CRUD protegidas con roles y tokens de acceso.
 
-### 🎯 Objetivos del Sistema
-- Gestionar usuarios (registro, autenticación, roles).
-- Administrar estudiantes (creación, actualización, eliminación y consulta).
-- Proteger las operaciones mediante autenticación JWT.
-- Implementar un entorno modular y escalable.
+Este proyecto fue creado con fines académicos, siguiendo buenas prácticas de arquitectura limpia, seguridad, pruebas unitarias y despliegue con Docker.
 
----
+🎯 Objetivos del Sistema
 
-## 🏗️ Arquitectura del Proyecto
+Registro e inicio de sesión con JWT.
+Gestión de usuarios (roles: Admin y User).
+CRUD completo de productos.
+Protección de endpoints mediante autorización.
+Base de datos en MySQL, con soporte para migraciones EF Core.
+Despliegue vía Docker (API + DB).
+Documentación con Swagger.
 
-El proyecto sigue una **arquitectura limpia (Clean Architecture)**, separando las responsabilidades en distintas capas:
+2 pruebas unitarias en la capa Application.
 
-```
-WebApi-HU3-develop/
+🏗️ Arquitectura del Proyecto
+
+El proyecto sigue el estilo de Clean Architecture, separando responsabilidades en 4 capas:
+
+Simulacro-HU3/
 │
-├── WebApi-HU3.Api/ → Capa de presentación (controladores, configuración de JWT, endpoints)
-├── WebApi-HU3.Application/ → Lógica de negocio (servicios, DTOs, validaciones)
-├── WebApi-HU3.Domain/ → Entidades principales e interfaces de repositorio
-├── WebApi-HU3.Infraestructure/ → Acceso a datos, contexto EF Core, repositorios
-└── Assets/ → Diagramas y documentación (Casos de uso, ERD, JWT, etc.)
-```
+├── Simulacro-HU3.Api/             → Capa de presentación (Controllers, configuración JWT, Swagger)
+├── Simulacro-HU3.Application/     → Lógica de negocio (Servicios, Validaciones, DTOs)
+├── Simulacro-HU3.Domain/          → Entidades e Interfaces
+├── Simulacro-HU3.Infraestructure/ → Acceso a datos, EF Core, Repositorios, Migraciones
+└── compose.yml / Dockerfile       → Contenedores (API + MySQL)
 
-Cada capa comunica solo lo necesario con la siguiente, asegurando bajo acoplamiento y alta cohesión.
 
----
+✅ Bajo acoplamiento
+✅ Alta cohesión
+✅ Escalabilidad y mantenibilidad
 
-## 🛠️ Tecnologías Utilizadas
+🛠️ Tecnologías Utilizadas
 
-- **.NET 8 / ASP.NET Core Web API**
-- **Entity Framework Core** (acceso a datos y migraciones)
-- **JWT (JSON Web Token)** para autenticación
-- **C# 12**
-- **SQL Server** (base de datos)
-- **Visual Studio / Rider / VS Code**
-- **Swagger** para documentación de endpoints
+.NET 8 – ASP.NET Core
 
----
+Entity Framework Core – MySQL
 
-## ⚙️ Configuración y Ejecución
+JWT (JSON Web Tokens)
 
-### 🔹 Requisitos Previos
-- .NET SDK 8.0 o superior
-- SQL Server o base de datos compatible
-- Herramienta de desarrollo: Rider, Visual Studio o VS Code
+C# 12
 
-### 🔹 Pasos de Instalación
+Docker & Docker Compose
 
-1. **Clonar el repositorio:**
-```bash
-   git clone https://github.com/tuusuario/WebApi-HU3.git
-   cd WebApi-HU3-develop
-```
-2. **Configurar la cadena de conexión** en el archivo:
+Swagger / Swashbuckle
 
-```bash
-WebApi-HU3.Api/appsettings.json
-```
+MySQL 8
 
-3. Aplicar migraciones y crear la base de datos:
+Rider / Visual Studio / VS Code
 
-```bash
-cd WebApi-HU3.Infraestructure
-dotnet ef database update
-```
+⚙️ Configuración y Ejecución
+✅ Requisitos Previos
 
-4. Ejecutar el proyecto:
+.NET SDK 8.0
 
-```bash
-cd ../WebApi-HU3.Api
+Docker Desktop
+
+Rider, Visual Studio o VS Code
+
+✅ 1. Clonar el repositorio
+git clone https://github.com/TU-USUARIO/Simulacro-HU3.git
+cd Simulacro-HU3
+
+✅ 2. Configurar el appsettings.json
+
+Archivo:
+
+Simulacro-HU3.Api/appsettings.json
+
+Ejemplo:
+
+"ConnectionStrings": {
+"DefaultConnection": "server=localhost;port=3307;database=SimulacroDb;user=root;password=rootpass;"
+},
+"Jwt": {
+"Key": "ESTA_ES_LA_CLAVE_SUPER_SECRETA"
+}
+
+✅ 3. Levantar MySQL con Docker
+docker-compose up -d
+
+
+Esto levanta:
+✅ MySQL
+✅ Puerto 3307
+✅ Red docker interna
+
+✅ 4. Ejecutar migraciones
+cd Simulacro-HU3.Infraestructure
+dotnet ef database update --startup-project ../Simulacro-HU3.Api
+
+✅ 5. Ejecutar la API
+cd ../Simulacro-HU3.Api
 dotnet run
-```
 
-5. Abrir en el navegador:
 
-```bash
-https://students-web-fb5f86739d1b.herokuapp.com/index.html
-```
+Luego abre Swagger:
+
+👉 http://localhost:8080/swagger
 
 🔐 Autenticación JWT
 
-El sistema utiliza JWT Bearer Tokens para autenticar y autorizar usuarios.
-🔸 Flujo Básico:
+La API usa JWT Bearer Tokens para autenticar usuarios.
+Flujo:
 
-1. El usuario se registra o inicia sesión mediante /api/Auth/login.
+El usuario se registra con POST /api/auth/register
 
-2. El servidor genera un token JWT firmado.
+Luego inicia sesión con POST /api/auth/login
 
-3. El cliente incluye el token en el encabezado de cada petición:
+El servidor devuelve un token JWT válido
 
-```bash
-    Authorization: Bearer {token}
-```
+El cliente lo envía en los headers:
 
----
+Authorization: Bearer {token}
 
-## 🧾 Endpoints Principales
 
-Los ficheros fuente están en:
-`WebApi-HU3-develop/WebApi-HU3.Api/Controllers/`
+✅ Todas las rutas están protegidas excepto Register y Login.
 
----
+🧾 Endpoints Principales
 
-## 🧩 **AuthController**
-**Ruta base:** `/api/Auth`
+Controladores ubicados en:
+Simulacro-HU3.Api/Controllers/
 
-### `POST /api/Auth/Login`
-**Propósito:** autenticar y devolver `AuthResponseDto` con Token + User.  
-**Autorización:** público (no requiere token).
+🔑 AuthController
 
----
+Ruta base: /api/auth
 
-### `POST /api/Auth/Register`
-**Propósito:** crear un nuevo usuario (acepta `UserRegisterDto` con `Username`, `Email`, `Password`, `Role`).  
-**Autorización:** público (no requiere token).
+✅ POST /api/auth/register
 
-> 📝 **Nota:** Actualmente el cliente puede indicar `Role` en el body (ver DTO `UserRegisterDto.Role`).
+Crea un usuario nuevo (Username, Email, Password, Role).
+🔓 Público.
 
----
+✅ POST /api/auth/login
 
-## 👤 **UserController**
-**Ruta base:** `/api/User`
+Devuelve:
 
-### `GET /api/User`
-**Propósito:** listar todos los usuarios.  
-**Autorización:** `[Authorize(Roles = "Admin")]` → solo **Admin**.
+Token JWT
 
----
+Datos del usuario autenticado
+🔓 Público.
 
-### `GET /api/User/{id}`
-**Propósito:** obtener un usuario por ID.  
-**Autorización:** `[Authorize]` → cualquier usuario autenticado (**Admin** o **User**).
+👤 UserController
 
----
+Ruta base: /api/users
 
-### `PUT /api/User/{id}`
-**Propósito:** actualizar un usuario existente.  
-**Autorización:** `[Authorize(Roles = "Admin")]` → solo **Admin**.
+Método	Endpoint	Autorización	Descripción
+GET	/api/users	Admin	Lista todos los usuarios
+GET	/api/users/{id}	Autenticado	Obtiene usuario por ID
+PUT	/api/users/{id}	Autenticado	Actualiza usuario
+DELETE	/api/users/{id}	Admin	Elimina usuario
+📦 ProductController
 
----
+Ruta base: /api/products
 
-### `DELETE /api/User/{id}`
-**Propósito:** eliminar un usuario.  
-**Autorización:** `[Authorize(Roles = "Admin")]` → solo **Admin**.
+Método	Endpoint	Autorización	Descripción
+POST	/api/products	Autenticado	Crear producto
+GET	/api/products	Autenticado	Listar productos
+GET	/api/products/{id}	Autenticado	Ver producto
+PUT	/api/products/{id}	Autenticado	Actualizar producto
+DELETE	/api/products/{id}	Admin	Eliminar producto
+🔧 Roles definidos
 
-📂 Estos atributos se encuentran en  
-`WebApi-HU3.Api/Controllers/UserController.cs`.
+Archivo:
+Simulacro-HU3.Domain/Entities/UserRole.cs
 
----
-
-## 🎓 **StudentController**
-**Ruta base:** `/api/Student`
-
-| Método | Endpoint | Descripción | Autorización |
-|---------|-----------|-------------|---------------|
-| `GET` | `/api/Student` | Listar estudiantes. | Pública |
-| `GET` | `/api/Student/{id}` | Obtener estudiante por ID. | Pública |
-| `POST` | `/api/Student` | Crear un nuevo estudiante. | Pública |
-| `PUT` | `/api/Student/{id}` | Actualizar estudiante. | Pública |
-| `DELETE` | `/api/Student/{id}` | Eliminar estudiante. | Pública |
-
-> ⚠️ En el código actual **no hay ningún `[Authorize]`** en la clase ni en los métodos de `StudentController`,  
-> por tanto, **todos los endpoints son públicos** (no requieren token).
-
----
-
-## 🧾 **Roles definidos en el dominio**
-
-**Archivo:**  
-`WebApi-HU3.Domain/Entities/UserRole.cs`
-
-```csharp
 public enum UserRole
 {
-    Admin,
-    User
+Admin,
+User
 }
-```
----
 
-## 🧩 Diagramas y Documentación
+📦 Docker
 
-### Diagrama Entidad-Relación (ER)
+El proyecto incluye:
 
-![Diagrama ER](./Assets/Images/Entidad_Relacion.png)
+Dockerfile para la API
 
----
+compose.yml para levantar:
+✅ MySQL
+✅ API
+✅ Red interna
 
-### Diagrama de Clases
+Ejemplo rápido:
 
-![Diagrama de Clases](./Assets/Images/Clases.png)
+docker-compose up -d --build
 
----
+🧪 Pruebas Unitarias (Application Layer)
 
-## Casos de Uso
+Incluye 2 pruebas obligatorias:
 
-![Casos de Uso](./Assets/Images/Casos_Uso.png)
+✅ Validación de creación de producto
+✅ Verificación del login de usuario
 
----
+📄 Documentación Adicional
 
-## Secuencias
+Diagramas en:
 
-### Generación de Token JWT
+Incluye:
 
-![Generación de Token JWT](./Assets/Images/Login_JWT.png)
+Diagrama de clases![img.png](img.png)
 
----
+
+
